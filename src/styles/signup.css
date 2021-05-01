@@ -1,0 +1,126 @@
+.signup{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.signup__content{
+    height: 658px;
+    width: 511px;
+    border-radius: 0px;
+    border: 1px solid black;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 0 1rem 0;
+}
+.signin{
+   height: 525px !important;   
+}
+.signup__logo{
+    height: 69px;
+    width: 350px;
+    border-radius: 5px;
+    background: #50AF59;
+    display: block;
+    margin: 1rem auto;
+}
+.signup__logo > img{
+    display: block;
+    margin: auto;
+}
+form{
+    padding: 0 2rem;
+}
+form > div {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+form > div > input {
+    width: 65%;
+    margin-top: 0.5rem;
+    padding: 5px 0;
+    outline: 0;
+}
+form > div > p{
+    color: red;
+    font-size: 13px;
+    margin-top: 0.5rem;
+}
+form > button{
+    height: 42px;
+    width: 190px;
+    border-radius: 5px;
+    display: block;
+    margin: 0 auto;
+    border: none;
+    background: #50AF59;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.signup__content > p{
+    padding-left: 2rem;
+}
+.signup__content > p > span{
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+    padding-left: 5px;
+}
+.signup__github{
+    height: 60px;
+    width: 220px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    color: white;
+    background: #1C1C1C;
+    cursor: pointer;
+}
+.signup__github > div {
+    display: flex;
+}
+.signup__github > div > svg{
+    font-size: 35px;
+}
+.signup__github > div > p{
+    font-size: 17px;
+    font-weight: 500;
+    padding-left: 7px;
+    display: block;
+    margin: auto 0;
+}
+.icon-spin {
+    -webkit-animation: icon-spin 2s infinite linear;
+            animation: icon-spin 2s infinite linear;
+  }
+  
+  @-webkit-keyframes icon-spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+              transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(359deg);
+              transform: rotate(359deg);
+    }
+  }
+  
+  @keyframes icon-spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+              transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(359deg);
+              transform: rotate(359deg);
+    }
+  }
