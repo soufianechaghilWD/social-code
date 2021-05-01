@@ -100,10 +100,10 @@ form > button{
 }
 .icon-spin {
     -webkit-animation: icon-spin 2s infinite linear;
-            animation: icon-spin 2s infinite linear;
-  }
+    animation: icon-spin 2s infinite linear;
+}
   
-  @-webkit-keyframes icon-spin {
+@-webkit-keyframes icon-spin {
     0% {
       -webkit-transform: rotate(0deg);
               transform: rotate(0deg);
@@ -112,9 +112,9 @@ form > button{
       -webkit-transform: rotate(359deg);
               transform: rotate(359deg);
     }
-  }
+}
   
-  @keyframes icon-spin {
+@keyframes icon-spin {
     0% {
       -webkit-transform: rotate(0deg);
               transform: rotate(0deg);
@@ -123,4 +123,15 @@ form > button{
       -webkit-transform: rotate(359deg);
               transform: rotate(359deg);
     }
-  }
+}
+.signup__logged {
+    flex-direction: row;
+}
+.signup__logged > input, .signup__logged > label{
+    display: block;
+    margin: auto 0;
+}
+.signup__logged > label{
+    font-weight: 300;
+    font-size: 15px;
+}

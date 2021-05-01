@@ -7,6 +7,7 @@ import { auth } from '../firebase';
 import axios from '../axios'
 import { useStateValue } from "../comp/StateProvider";
 import { VscLoading } from 'react-icons/vsc'
+import firebase from 'firebase'
 
 const Signup = () => {
 
@@ -19,7 +20,7 @@ const Signup = () => {
     const [ state , dispatch] = useStateValue();
     const [userExists, setUserExists] = useState(null)
     const [loading, setLoading] = useState(false)
-
+    const [logged, setLogged] = useState(false)
 
     useEffect(() => {
         if(err !== null){
@@ -49,7 +50,10 @@ const Signup = () => {
                             dispatch({
                             type: "SET__USER",
                             user: ress.user
-                        })
+                            })
+                            if(logged){
+                                localStorage.setItem('social-user', JSON.stringify(ress.user))
+                            }
                         })
                         .then(() => {
                             setLoading(false)
@@ -73,6 +77,62 @@ const Signup = () => {
             else setErr(err)
             setLoading(false)
         })
+    }
+
+    const handleSignUpWithGithub = () => {
+        const provider = new firebase.auth.GithubAuthProvider()
+
+        firebase.auth() // Signup or signin with github
+        .signInWithPopup(provider)
+        .then((result) => {
+
+            // The signed-in user info.
+            var user = result.user;
+
+            axios.post('/user', { // Create the user on the DB if it's not created
+                email: user.email,
+                username: result.additionalUserInfo.username,
+                name: result.additionalUserInfo.profile.name || result.additionalUserInfo.username
+            })
+            .then((res) => {
+                if(res.status === 200){
+                    user.updateProfile({
+                        displayName: res.data._id
+                    })
+                    .then(() => {
+                        const pro = new Promise((reso, reje) => {
+                            reso(dispatch({
+                                type: "SET__USER",
+                                user: user
+                            }))
+                        })
+                        pro.then(() => {
+                            if(logged){
+                                localStorage.setItem('social-user', JSON.stringify(user))
+                            }
+                            history.push('/')
+                        })
+                    })
+                }
+            })
+            .catch(err => {
+                if(err.response.status === 301){
+                    const pro = new Promise((reso, reje) => {
+                    reso(dispatch({
+                        type: "SET__USER",
+                        user: user
+                    }))
+                    })
+                    pro.then(() => {
+                        if(logged){
+                            localStorage.setItem('social-user', JSON.stringify(user))
+                        }
+                        history.push('/')
+                    }) 
+                }
+            })
+        })
+        .catch(err => alert(err.message))
     }
 
 
@@ -101,9 +161,13 @@ const Signup = () => {
                         <label>Password</label>
                         <input value={password} onChange={e => setPassword(e.target.value)}  type="password" placeholder="Type your Password"/>
                     </div>
+                    <div className="signup__logged">
+                        <label>Stay Logged in</label>
+                        <input type="checkbox" value={logged} onChange={e => setLogged(!logged)} />
+                    </div>
                     <button onClick={handleSignUpWithEmail} disabled={loading} >{!loading ? "Sign up" : <VscLoading className="icon-spin" />}</button>
                 </form>
-                <div className="signup__github">
+                <div className="signup__github" onClick={handleSignUpWithGithub}>
                     <div>
                         <AiFillGithub />
                         <p>Sign up with Github</p>
