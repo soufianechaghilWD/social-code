@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import "../styles/signup.css"
 import Logo from "../files/LogoWhite.png"
 import { AiFillGithub } from "react-icons/ai"
@@ -20,7 +20,14 @@ const Signup = () => {
     const [userExists, setUserExists] = useState(null)
     const [loading, setLoading] = useState(false)
 
-    const handleSignUp = (e) => {
+
+    useEffect(() => {
+        if(err !== null){
+            alert(err)
+        }
+    }, [err])
+
+    const handleSignUpWithEmail = (e) => {
         
         e.preventDefault()
         setLoading(true)
@@ -32,16 +39,18 @@ const Signup = () => {
         }) // Create the user in DB
         .then((res) => {
             if(res.status === 200){
-                auth.createUserWithEmailAndPassword(email, password)
+                auth.createUserWithEmailAndPassword(email, password) // Create the user on Firebase
                 .then(ress => {
                     if(ress.user){
                         ress.user.updateProfile({
                             displayName: res.data._id
-                        })
-                        .then(() => dispatch({
+                        }) // Update the user in firebase (putting the Id from DB in the displayname)
+                        .then(() => {
+                            dispatch({
                             type: "SET__USER",
                             user: ress.user
-                        }))
+                        })
+                        })
                         .then(() => {
                             setLoading(false)
                             history.push('/')
@@ -60,14 +69,12 @@ const Signup = () => {
             }
         })
         .catch(err => {
-            console.log(err.response)
             if(err.response.status === 301) setUserExists(err.response.data)
             else setErr(err)
             setLoading(false)
         })
     }
 
-    console.log(userExists)
 
     return (
         <div className="signup">
@@ -94,7 +101,7 @@ const Signup = () => {
                         <label>Password</label>
                         <input value={password} onChange={e => setPassword(e.target.value)}  type="password" placeholder="Type your Password"/>
                     </div>
-                    <button onClick={handleSignUp} disabled={loading} >{!loading ? "Sign up" : <VscLoading className="icon-spin" />}</button>
+                    <button onClick={handleSignUpWithEmail} disabled={loading} >{!loading ? "Sign up" : <VscLoading className="icon-spin" />}</button>
                 </form>
                 <div className="signup__github">
                     <div>
