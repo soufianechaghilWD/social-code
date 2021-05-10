@@ -8,6 +8,10 @@ import axios from '../axios'
 import { useStateValue } from "../comp/StateProvider";
 import { VscLoading } from 'react-icons/vsc'
 import firebase from 'firebase'
+// import {UnControlled as CodeMirror} from 'react-codemirror2'
+// import 'codemirror/lib/codemirror.css';
+// import 'codemirror/theme/material.css';
+// import 'codemirror/mode/javascript/javascript'
 
 const Signup = () => {
 
@@ -44,7 +48,8 @@ const Signup = () => {
                 .then(ress => {
                     if(ress.user){
                         ress.user.updateProfile({
-                            displayName: res.data._id
+                            displayName: res.data._id,
+                            photoURL: "https://cencup.com/wp-content/uploads/2019/07/avatar-placeholder.png"
                         }) // Update the user in firebase (putting the Id from DB in the displayname)
                         .then(() => {
                             dispatch({
@@ -97,7 +102,8 @@ const Signup = () => {
             .then((res) => {
                 if(res.status === 200){
                     user.updateProfile({
-                        displayName: res.data._id
+                        displayName: res.data._id,
+                        photoURL: "https://cencup.com/wp-content/uploads/2019/07/avatar-placeholder.png"
                     })
                     .then(() => {
                         const pro = new Promise((reso, reje) => {
@@ -175,6 +181,8 @@ const Signup = () => {
                 </div>
                 <p>If you already have an account <span onClick={e => history.push('/signin')}>Sign in</span></p>
             </div>
+
+
         </div>
     )
 }

@@ -2,6 +2,7 @@ const express = require("express")
 const cors = require("cors")
 const mongoose = require("mongoose")
 const userRouter = require('./routes/user').userRouter
+const challengeRouter = require("./routes/challenge").challengeRouter
 
 const app = express()
 const port = process.env.PORT || 7000
@@ -18,6 +19,7 @@ db.once('open', () => {
 app.use(express.json())
 app.use(cors())
 app.use('/user', userRouter)
+app.use('/challenge', challengeRouter)
 
 app.get('/', (req, res) => {
     res.status(200).send("It's working loky")
