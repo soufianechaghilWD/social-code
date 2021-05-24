@@ -40,7 +40,7 @@ form > div {
     flex-direction: column;
     margin-bottom: 1rem;
 }
-form > div > input {
+.signup__content > form > div > input {
     width: 65%;
     margin-top: 0.5rem;
     padding: 5px 0;
@@ -51,7 +51,7 @@ form > div > p{
     font-size: 13px;
     margin-top: 0.5rem;
 }
-form > button{
+.signup__content > form > button{
     height: 42px;
     width: 190px;
     border-radius: 5px;

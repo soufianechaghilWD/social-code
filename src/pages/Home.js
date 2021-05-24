@@ -53,7 +53,6 @@ const Home = () => {
         }
     }, [state, localStorage])
 
-    console.log("wooo", state)
 
     return (
         <div>
@@ -62,7 +61,7 @@ const Home = () => {
             <button onClick={e => history.push('/signup')}>sign up</button>
             <button onClick={e => history.push('/signin')}>sign in</button>
             <button onClick={() => localStorage.removeItem('social-user')}>Delete the local storage</button> */}
-            <Header user={user} />
+            <Header user={user} photoUrl={state?.user?.photoURL} />
             <Publish />
         </div>
     )
