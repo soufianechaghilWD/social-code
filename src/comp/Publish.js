@@ -3,8 +3,14 @@ import '../styles/publish.css'
 import { AiOutlinePlus } from "react-icons/ai"
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-import AddTest from './AddTest';
-  
+import Modal_Add from './Modal_Add';
+import { TheRightSizeIn } from '../outils';
+import {Controlled as CodeMirror} from 'react-codemirror2'
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/material.css';
+import 'codemirror/mode/javascript/javascript'
+
+
 const useStyles = makeStyles((theme) => ({
 paper: {
     position: 'absolute',
@@ -26,8 +32,14 @@ const Publish = () => {
 
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-    const [inputs, setInputs] = useState([])
-    const [outputs, setOutputs] = useState([])
+    const [inputs, setInputs] = useState(null)
+    const [outputs, setOutputs] = useState(null)
+    const [name, setName] = useState('')
+    const [level, setLevel] = useState('me')
+    const [time, setTime] = useState('30')
+    const [desc, setDesc] = useState("")
+    const [tag, setTag] = useState("arrays")
+    const [skelet, setSkelet] = useState("")
 
     const handleOpen = () => {
         setOpen(true);
@@ -37,27 +49,19 @@ const Publish = () => {
         setOpen(false);
     };
 
-    // const body = (
-    //     <div  className={`${classes.paper} add_test_modal`}>
-    //         <h2 id="simple-modal-title">Text in a modal</h2>
-    //         <p id="simple-modal-description">
-    //             Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-    //         </p>
-    //     </div>
-    // );
 
 
     const publish_A_Challenge = (e) => {
         e.preventDefault()
-        console.log("test")
+        console.log("test", name, level, desc, time, tag, inputs, outputs)
     }
 
-    const addItem = (item) => {
-        setInputs([...inputs, item])
+    const add = (inputs, outputs) => {
+        setInputs(inputs)
+        setOutputs(outputs)
         setOpen(false)
     }
 
-    console.log("in", inputs.length, "\n", inputs)
 
     return (
         <div className="publish">
@@ -66,15 +70,20 @@ const Publish = () => {
                 <form>
                     <div>
                         <label>The Name of the challenge</label>
-                        <input type="text" />
+                        <input type="text" value={name} onChange={e => setName(e.target.value)} />
                     </div>
                     <div>
                         <label>The Level of the challenge</label>
-                        <input type="text" />
+                        <select onChange={e => setLevel(e.target.value)}>
+                            <option value="ea">Easy</option>
+                            <option selected value="me">Meduim</option>
+                            <option value="ha">Hard</option>
+                            <option value="vh">Very Hard</option>
+                        </select>
                     </div>
                     <div>
                         <label>The Average solving time of the challenge</label>
-                        <select>
+                        <select onChange={e => setTime(e.target.value)}>
                             <option value="15">15min</option>
                             <option selected value="30">30min</option>
                             <option value="45">45min</option>
@@ -83,15 +92,29 @@ const Publish = () => {
                     </div>
                     <div>
                         <label>The Description of the challenge</label>
-                        <textarea rows={6} />
+                        <textarea rows={6} value={desc} onChange={e => setDesc(e.target.value)} />
                     </div>
                     <div>
                         <label>The Skelet of the challenge</label>
-                        <textarea rows={6} />
+                        <div>
+                            <CodeMirror
+                            value={skelet}
+                            options={{
+                                mode: 'javascript',
+                                theme: 'material',
+                                lineNumbers: true,
+                                lineWrapping: true
+                            }}
+                            onBeforeChange={(editor, data, value) => {
+                                setSkelet(value)
+                            }}
+                            className="skelet"
+                            />
+                        </div>
                     </div>
                     <div>
                         <label>The Tag of the challenge</label>
-                        <select>
+                        <select onChange={e => setTag(e.target.value)}>
                             <option value="functions">Functions</option>
                             <option selected value="arrays">Arrays</option>
                             <option value="objects">Objects</option>
@@ -101,15 +124,22 @@ const Publish = () => {
                     <div>
                         <label>The Tests of the challenge</label>
                         <div>
-                            <span>The first output is the first input’s output</span>
                             <div>
-                                <h3>Inputs</h3>
+                                <div>
+                                    <h3>Inputs</h3>
+                                    {inputs !== null && <p>{ TheRightSizeIn(inputs)}</p>}
+                                </div>
+                                <div className="outputs">
+                                    <h3>Outputs</h3>
+                                    {outputs !== null && <p>{ TheRightSizeIn(outputs)}</p>}
+                                </div>
+                            </div>
+                            {(inputs === null && outputs === null) && 
+                                <div>
                                 <AiOutlinePlus onClick={handleOpen} />
-                            </div>
-                            <div>
-                                <h3>Outputs</h3>
-                                <AiOutlinePlus />
-                            </div>
+                                </div>
+                            }
+                            
                         </div>
                     </div>
                     <button onClick={publish_A_Challenge}>Publish</button>
@@ -118,10 +148,11 @@ const Publish = () => {
             <Modal
                 className={classes.all}
                 open={open}
+                onClose={handleClose}
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
             >
-                <AddTest cln={classes.paper} addItem={addItem} />
+                <Modal_Add cln={classes.paper} add={add} />
             </Modal>
         </div>
     )

@@ -6,3 +6,9 @@ export const TheRightSize = (str) => {
     if(str.length > 20) return str.slice(0, 25) + "..."
     else return str
 }
+
+
+export const TheRightSizeIn = (str) => {
+    if(str.length > 20) return str.slice(0, 35) + "...]"
+    else return str
+}
